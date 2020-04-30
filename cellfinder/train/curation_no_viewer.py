@@ -92,6 +92,7 @@ def main():
 
     ensure_directory_exists(str(output_directory))
     output_filename = output_directory / "curated_cells.xml"
+    print(output_filename)
     start_cube_extraction(args, output_directory, output_filename)
 
 
@@ -126,9 +127,6 @@ def start_cube_extraction(args, output_directory, output_filename):
 
         print("Saving yaml file to use for training")
         save_yaml_file(output_directory)
-
-        print("Closing window")
-        QApplication.closeAllWindows()
         print(
             "Finished! You may now annotate more "
             "datasets, or go straight to training"
