@@ -139,6 +139,7 @@ setup(
             "cellfinder_cells_to_brainrender = "
             "neuro.points.points_to_brainrender:main",
             "cellfinder_curate = cellfinder.train.curation:main",
+            "cellfinder_cube_extraction = cellfinder.train.curation_no_viewer:main",
         ]
     },
     project_urls={
