@@ -53,6 +53,7 @@ def main(args, max_workers=3):
         workers=workers,
         verbose=True,
     )
+    np.save(args.output_dir, predictions)
     predictions = predictions.round()
     predictions = predictions.astype("uint16")
 
