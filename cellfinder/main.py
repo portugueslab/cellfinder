@@ -12,10 +12,62 @@ import os
 import logging
 from datetime import datetime
 from imlib.general.logging import suppress_specific_logs
-
+from dataclasses import dataclass
 tf_suppress_log_messages = [
     "multiprocessing can interact badly with TensorFlow"
 ]
+
+@dataclass
+class Parameters():
+    signal_ch_ids: list
+    registration_config: list
+    x_pixel_um: float
+    y_pixel_um: float
+    z_pixel_um: float
+
+    signal_planes_paths: str = ""
+    background_planes_path: str = ""
+    output_dir: str = ""
+    register: bool = False
+    summarise: bool = False
+    figures: bool = False
+    background_ch_id: int = 0
+    sort_input_file: bool = True
+    no_save_downsampled: bool = False
+    affine_n_steps: int = 6
+    affine_use_n_steps: int = 5
+    freeform_n_steps: int = 6
+    freeform_use_n_steps: int = 4
+    bending_energy_weight: float = 0.95
+    grid_spacing: int = -10
+    smoothing_sigma_reference: float = -1.0
+    smoothing_sigma_floating: float = -1.0
+    histogram_n_bins_floating: int = 128
+    histogram_n_bins_reference: int = 128
+    x_pixel_um_network: float = 1.0
+    y_pixel_um_network: float = 1.0
+    z_pixel_um_network: float = 1.0
+    orientation: str = "coronal"  # "coronal", "sagittal", "horizontal"
+    flip_x: bool = True
+    flip_y: bool = True
+    flip_z: bool = True
+    rotation: str = "x0y0z0"
+    no_detection: bool = True
+    no_classification: bool = True
+    no_standard_space: bool = True
+    start_plane: int = 0
+    end_plane: int = -1
+
+
+
+
+
+
+
+
+
+
+
 
 
 def main():
