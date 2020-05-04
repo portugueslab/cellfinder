@@ -120,7 +120,8 @@ def main():
         @viewer.bind_key("t")
         def toggle_point_property(viewer):
             """Toggle point type"""
-            selected_points = viewer.layers[1].selected_data
+
+            selected_points = np.array(list(viewer.layers[1].selected_data)).astype(np.int)
             if selected_points:
                 selected_properties = viewer.layers[1].properties["cell"][
                     selected_points
