@@ -24,8 +24,6 @@ from imlib.general.numerical import check_positive_float, check_positive_int
 from imlib.general.system import ensure_directory_exists
 from imlib.IO.cells import find_relevant_tiffs
 from imlib.IO.yaml import read_yaml_section
-from tensorflow.keras.callbacks import CSVLogger
-from tensorflow.keras.callbacks import Callback
 
 tf_suppress_log_messages = [
     "sample_weight modes were coerced from",
