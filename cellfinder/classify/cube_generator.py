@@ -10,6 +10,7 @@ from tensorflow.python.keras.utils.data_utils import Sequence
 from imlib.IO.cells import get_cells
 from imlib.cells.cells import group_cells_by_z
 from imlib.general.numerical import is_even
+from scipy.ndimage import median_filter
 
 from cellfinder.extract.extract_cubes import StackSizeError
 from cellfinder.classify.augment import AugmentationParameters, augment
@@ -405,7 +406,9 @@ class CubeGeneratorFromDisk(Sequence):
         list_background_tmp = [self.background_list[k] for k in indexes]
 
         images = self.__generate_cubes(list_signal_tmp, list_background_tmp)
-
+        images[images == np.inf] = 0
+        images[images == -np.inf] = 0
+        images[images == np.nan] = 0
         if self.train:
             batch_labels = [self.labels[k] for k in indexes]
             batch_labels = tf.keras.utils.to_categorical(
@@ -440,8 +443,8 @@ class CubeGeneratorFromDisk(Sequence):
                 self.interpolation_order,
                 self.augment_likelihood,
             )
-        images[idx, :, :, :, 0] = self.__get_oriented_image(signal_im)
-        images[idx, :, :, :, 1] = self.__get_oriented_image(background_im)
+        images[idx, :, :, :, 0] = inf_security_check(self.__get_oriented_image(signal_im))
+        images[idx, :, :, :, 1] = inf_security_check(self.__get_oriented_image(background_im))
 
         return images
 
@@ -451,3 +454,19 @@ class CubeGeneratorFromDisk(Sequence):
         if self.augment:
             image = augment(self.augmentation_parameters, image)
         return image
+
+
+def inf_security_check(image):
+    image_ok = image
+    is_ok = False
+    filter_s = 2
+    while is_ok is False:
+        ind_inf = np.where(image_ok == np.inf)
+        if ind_inf[0].shape[0] != 0:
+            filt_image = median_filter(image.astype(np.float32), size=filter_s)
+            image_ok = image
+            image_ok[ind_inf] = filt_image[ind_inf]
+            filter_s += 1
+        else:
+            is_ok = True
+    return image_ok
