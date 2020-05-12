@@ -53,7 +53,6 @@ def main(args, max_workers=3):
         workers=workers,
         verbose=True,
     )
-    np.save(args.output_dir, predictions)
     predictions = predictions.round()
     predictions = predictions.astype("uint16")
 
@@ -64,6 +63,7 @@ def main(args, max_workers=3):
     for idx, cell in enumerate(inference_generator.ordered_cells):
         cell.type = predictions[idx] + 1
         cells_list.append(cell)
+
 
     logging.info("Saving classified cells")
     save_cells(
