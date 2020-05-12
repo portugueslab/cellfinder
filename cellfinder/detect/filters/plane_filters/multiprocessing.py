@@ -57,7 +57,7 @@ class MpTileProcessor(object):
 
 
 def adaptive_thresholding(plane, wind, n_std, fill_value):
-    patches = sk_image.extract_patches_2d(img, (wind, wind))
+    patches = sk_image.extract_patches_2d(plane, (wind, wind))
     proc_patches = np.zeros(patches.shape)
     for n_patch in range(patches.shape[0]):
         proc_patches[n_patch, :, :] = meanstd_thr(patches[n_patch, :, :], n_std)
