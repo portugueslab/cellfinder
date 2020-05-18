@@ -16,7 +16,7 @@ from imlib.general.exceptions import CommandLineInputError
 from imlib.general.config import get_config_obj
 from imlib.source import source_files
 
-import amap.download.cli.atlas_download as atlas_download
+from amap.download.cli import atlas_download
 
 import cellfinder.tools.tf as tf_tools
 import cellfinder as program_for_log
