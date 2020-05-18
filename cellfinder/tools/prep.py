@@ -410,7 +410,7 @@ def prep_registration(args, sample_name="amap"):
             )
         if not args.no_atlas:
             logging.warning("Atlas does not exist, downloading.")
-            atlas_download.main(args.atlas, atlas_dir, atlas_download_path)
+            atlas_download(args.atlas, atlas_dir, atlas_download_path)
         amend_cfg(new_atlas_folder=atlas_dir, atlas=args.atlas)
 
     if args.registration_config is None:
