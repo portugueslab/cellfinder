@@ -104,7 +104,7 @@ def main():
         viewer = napari.Viewer(title="Cellfinder cell curation")
         images = magic_imread(img_paths, use_dask=True, stack=True)
         # max_value = estimate_image_max(img_paths)
-        viewer.add_image(images, is_pyramid=False)
+        viewer.add_image(images)
         face_color_cycle = ["lightskyblue", "lightgoldenrodyellow"]
         points_layer = viewer.add_points(
             cells,

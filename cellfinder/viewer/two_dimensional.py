@@ -60,7 +60,7 @@ def main():
         images = magic_imread(img_paths, use_dask=True, stack=True)
         # max_value = estimate_image_max(img_paths)
         # v.add_image(images, contrast_limits=[0, max_value], is_pyramid=False)
-        v.add_image(images, is_pyramid=False)
+        v.add_image(images)
 
         v.add_points(
             non_cells,
