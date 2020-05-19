@@ -215,7 +215,12 @@ def analysis_run(args, file_name="summary_cell_counts.csv"):
         args.paths.classification_out_file, cells_only=args.cells_only,
     )
     max_coords = get_max_coords(cells)  # Useful for debugging dimensions
-    structures_reference_df = load_structures_as_df(get_structures_path())
+
+    if args.registration_config != "":
+        struct_path = get_structures_path(config=args.registration_config)
+    else:
+        struct_path = get_structures_path()
+    structures_reference_df = load_structures_as_df(struct_path)
 
     atlas_pixel_sizes = get_atlas_pixel_sizes(args.atlas_config)
     sample_pixel_sizes = args.x_pixel_um, args.y_pixel_um, args.z_pixel_um

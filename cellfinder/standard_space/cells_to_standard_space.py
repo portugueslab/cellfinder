@@ -182,6 +182,7 @@ def cli_parse(parser):
         "--registration-config",
         dest="registration_config",
         type=str,
+        default="",
         help="To supply your own, custom registration configuration file.",
     )
     return parser

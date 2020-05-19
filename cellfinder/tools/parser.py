@@ -556,18 +556,12 @@ def proximity_filter_parser(parser):
         "Proximity filtering used after the classification in order to avoid"
         "multiple markers on the same cell"
     )
+
     filtering_parser.add_argument(
         "--proximity-filter",
-        dest="prox_filt",
-        action="store_true",
-        default=False,
-        help="apply filter",
-    )
-    filtering_parser.add_argument(
-        "--proximity-distance",
         dest="prox_dist",
         type=check_positive_float,
-        default=5,
+        default=None,
         help="distance used by the proximity filter",
     )
 

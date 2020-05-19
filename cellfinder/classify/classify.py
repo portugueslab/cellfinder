@@ -67,7 +67,7 @@ def main(args, max_workers=3):
             cells_list.append(cell)
         else:
             non_cells_list.append(cell)
-    if args.prox_filt:
+    if args.prox_dist is not None:
         logging.info("Running proximity filtering")
         filt_cell_coords = proximity_filter(cells_list, args.prox_dist, [args.z_pixel_um, args.y_pixel_um, args.x_pixel_um])
         final_cells_list = []
