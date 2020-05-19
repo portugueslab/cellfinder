@@ -1,13 +1,13 @@
 import logging
 import numpy as np
 from imlib.general.system import get_sorted_file_paths, get_num_processes
-
+from imlib.cells.cells import Cell
 
 from imlib.IO.cells import save_cells
 from cellfinder.classify.tools import get_model
 from cellfinder.classify.cube_generator import CubeGeneratorFromFile
 from cellfinder.train.train_yml import models
-
+from cellfinder.detect.filters.post_classification_filters.proximity_filtering import proximity_filter
 
 def main(args, max_workers=3):
     signal_paths = args.signal_planes_paths[args.signal_channel]
@@ -58,14 +58,36 @@ def main(args, max_workers=3):
 
     predictions = np.argmax(predictions, axis=1)
     cells_list = []
+    non_cells_list = []
 
     # only go through the "extractable" cells
     for idx, cell in enumerate(inference_generator.ordered_cells):
         cell.type = predictions[idx] + 1
-        cells_list.append(cell)
+        if cell.type == 2:
+            cells_list.append(cell)
+        else:
+            non_cells_list.append(cell)
+    print("pre:", len(cells_list))
+    if args.prox_filt:
+        logging.info("Running proximity filtering")
+        filt_cell_coords = proximity_filter(cells_list, args.prox_dist, [args.z_pixel_um, args.y_pixel_um, args.x_pixel_um])
+        final_cells_list = []
+        for cell_coord in filt_cell_coords:
+            pos = {
+                "x": cell_coord[2],
 
-
+                "y": cell_coord[1],
+                "z": cell_coord[0]
+            }
+            cell = Cell(pos, "cell")
+            final_cells_list.append(cell)
+    else:
+        final_cells_list = cells_list
+    msg = "Removed " + str(np.round((1 - (len(final_cells_list) / len(cells_list))) * 100)) + " % of rois marked as cells"
+    logging.info(msg)
+    result_list = final_cells_list
+    result_list.extend(non_cells_list)
     logging.info("Saving classified cells")
     save_cells(
-        cells_list, args.paths.classification_out_file, save_csv=args.save_csv
+        result_list, args.paths.classification_out_file, save_csv=args.save_csv
     )

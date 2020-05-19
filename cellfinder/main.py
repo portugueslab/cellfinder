@@ -120,6 +120,12 @@ def run_all(args, what_to_run):
     else:
         logging.info("Skipping cell classification")
 
+    if what_to_run.post_cla_filt:
+        logging.info("Running proximity filtering")
+
+    else:
+        logging.info("Skipping proximity filtering")
+
     if what_to_run.summarise:
         logging.info("Summarising cell counts")
         cell_count_summary.analysis_run(args)

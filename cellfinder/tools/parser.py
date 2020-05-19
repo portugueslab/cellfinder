@@ -68,6 +68,7 @@ def cellfinder_parser():
     parser = amap_parser(parser)
     parser = model_parser(parser)
     parser = download_directory_parser(parser)
+    parser = proximity_filter_parser(parser)
     return parser
 
 
@@ -547,4 +548,27 @@ def misc_parse(parser):
             SUPPORTED_METADATA_TYPES
         ),
     )
+    return parser
+
+
+def proximity_filter_parser(parser):
+    filtering_parser = parser.add_argument_group(
+        "Proximity filtering used after the classification in order to avoid"
+        "multiple markers on the same cell"
+    )
+    filtering_parser.add_argument(
+        "--proximity-filter",
+        dest="prox_filt",
+        action="store_true",
+        default=False,
+        help="apply filter",
+    )
+    filtering_parser.add_argument(
+        "--proximity-distance",
+        dest="prox_dist",
+        type=check_positive_float,
+        default=5,
+        help="distance used by the proximity filter",
+    )
+
     return parser

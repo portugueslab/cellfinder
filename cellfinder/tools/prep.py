@@ -300,6 +300,7 @@ class CalcWhatToRun:
         self.summarise = True
         self.figures = True
         self.standard_space = True
+        self.post_cla_filt = True
 
         # order is important
         self.cli_options(args)
@@ -315,6 +316,7 @@ class CalcWhatToRun:
     def cli_options(self, args):
         self.detect = not args.no_detection
         self.classify = not args.no_classification
+        self.post_cla_filt = args.prox_filt
 
         self.register = args.register
         self.summarise = args.summarise
@@ -410,8 +412,8 @@ def prep_registration(args, sample_name="amap"):
             )
         if not args.no_atlas:
             logging.warning("Atlas does not exist, downloading.")
-            atlas_download(args.atlas, Path(atlas_dir), Path(atlas_download_path))
-        amend_cfg(new_atlas_folder=atlas_dir, atlas=args.atlas)
+            atlas_download(Path(args.atlas), Path(atlas_dir), Path(atlas_download_path))
+        amend_cfg(new_atlas_folder=Path(atlas_dir), atlas=Path(args.atlas))
 
     if args.registration_config is None:
         args.registration_config = (
